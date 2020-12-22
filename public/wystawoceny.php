@@ -1,8 +1,14 @@
 <?php 
-    require("config.php");
+    require_once "config.php";
 
-    $grades = $database->query("SELECT * FROM klasy;");
-    $subjects = $database->query("SELECT * FROM przedmioty;");
+    if($_SERVER["REQUEST_METHOD"] != "POST")
+        redirect("localhost:8080");
+    
+        $grades = implode(", ", $_POST["grade"]);
+        $subjects = implode(", ", $_POST["subject"]);
+
+        $grades = $database->query("SELECT * FROM klasy WHERE idklasy IN ($grades) ORDER BY idklasy;");
+        $subjects = $database->query("SELECT * FROM przedmioty WHERE idprzedmioty IN ($subjects) ORDER BY idprzedmioty;");
 ?>
 
 <!DOCTYPE html>
@@ -15,6 +21,11 @@
     <title>Dziennik internetowy</title>
 </head>
 <body class="grey lighten-4" style="height: 100%;">
+    <style>
+        table {
+            table-layout: fixed;
+        }
+    </style>
     <header style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
         <nav class="top-nav teal">
                 <div class="nav-wrapper">
@@ -56,35 +67,52 @@
         <div class="container">
             <h3>Wstawianie ocen</h3>
             <div class="card" style="padding: 1rem;">  
-                <form action="wystawoceny.php" method="post">
-                    <div class="input-field">
-                        <select multiple name="grade[]">
-                            <?php while($row = $grades->fetch_assoc()): ?>
-                                <option value="<?= $row["idklasy"] ?>"><?= $row["nazwa"] ?></option>
-                            <?php endwhile; ?>
-                        </select>
-                        <label>Klasa</label>
-                    </div>
-                    <div class="input-field">
-                        <select multiple name="subject[]">
-                            <?php while($row = $subjects->fetch_assoc()): ?>
-                                <option value="<?= $row["idprzedmioty"] ?>"><?= $row["nazwa"] ?></option>
-                            <?php endwhile; ?>
-                        </select>
-                        <label>Przedmiot</label>
-                    </div>
-                    <button class="btn waves-effect waves-light" type="submit">Dalej</button>
-                </form>
+                <?php while($row1 = $subjects->fetch_assoc()): ?>
+                    <h4><?= $row1["nazwa"] ?></h4>
+                    <?php while($row = $grades->fetch_assoc()): ?>
+                        <h5>Klasa <?= $row["nazwa"] ?></h5>
+                        <table class="striped">
+                            <thead>
+                                <tr>
+                                    <th>Lp.</th>
+                                    <th>Imię i nazwisko</th>
+                                    <th>Oceny</th>
+                                    <th>Ocena wstawiana</th>
+                                    <th>Opis oceny</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                    $grade = $row["idklasy"];
+                                    $subject = $row1["idprzedmioty"];
+                                    $students = $database->query("SELECT uczniowie.iduczniowie, 
+                                        uczniowie.nazwisko, 
+                                        uczniowie.imie, 
+                                        GROUP_CONCAT(oceny.ocena ORDER BY oceny.idoceny SEPARATOR ', ') AS oceny 
+                                    FROM uczniowie 
+                                    LEFT JOIN oceny 
+                                    ON uczniowie.iduczniowie=oceny.iducznia AND oceny.idprzedmiot = $subject 
+                                    WHERE uczniowie.idklasy = $grade 
+                                    GROUP BY uczniowie.iduczniowie 
+                                    ORDER BY uczniowie.nazwisko;");
+                                    $i = 1;
+                                ?>
+                                <?php while($row = $students->fetch_assoc()): ?>
+                                    <tr>
+                                        <td><?= $i ?></td>
+                                        <td><?= $row["imie"] ?> <?= $row["nazwisko"] ?></td>
+                                        <td><?= $row["oceny"]?></th>
+                                        <td></th>
+                                        <td></td>
+                                        <?php $i++; ?>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    <?php endwhile; ?>
+                    <?php $grades->data_seek(0); ?>
+                <?php endwhile; ?>
             </div>
-            <?php 
-                if($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $grades = implode(", ", $_POST["grade"]);
-                    $students = $database->query("SELECT * FROM uczniowie WHERE idklasy IN ($grades) ORDER BY idklasy;");
-                    while($row = $students->fetch_assoc()) {
-                        echo $row["imie"]." ".$row["nazwisko"]."<br>";
-                    }
-                }
-            ?>
         </div>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
