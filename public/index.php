@@ -76,15 +76,6 @@
                     <button class="btn waves-effect waves-light" type="submit">Dalej</button>
                 </form>
             </div>
-            <?php 
-                if($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $grades = implode(", ", $_POST["grade"]);
-                    $students = $database->query("SELECT * FROM uczniowie WHERE idklasy IN ($grades) ORDER BY idklasy;");
-                    while($row = $students->fetch_assoc()) {
-                        echo $row["imie"]." ".$row["nazwisko"]."<br>";
-                    }
-                }
-            ?>
         </div>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>

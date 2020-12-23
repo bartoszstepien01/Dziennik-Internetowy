@@ -2,7 +2,7 @@
     require_once "config.php";
 
     if($_SERVER["REQUEST_METHOD"] != "POST")
-        redirect("localhost:8080");
+        redirect("/");
     
         $grades = implode(", ", $_POST["grade"]);
         $subjects = implode(", ", $_POST["subject"]);
@@ -24,6 +24,15 @@
     <style>
         table {
             table-layout: fixed;
+        }
+
+        input {
+            margin: 0 !important;
+        }
+
+        td {
+            padding-top: 7.5px;
+            padding-bottom: 7.5px;
         }
     </style>
     <header style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
@@ -66,52 +75,56 @@
     <main style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
         <div class="container">
             <h3>Wstawianie ocen</h3>
-            <div class="card" style="padding: 1rem;">  
-                <?php while($row1 = $subjects->fetch_assoc()): ?>
-                    <h4><?= $row1["nazwa"] ?></h4>
-                    <?php while($row = $grades->fetch_assoc()): ?>
-                        <h5>Klasa <?= $row["nazwa"] ?></h5>
-                        <table class="striped">
-                            <thead>
-                                <tr>
-                                    <th>Lp.</th>
-                                    <th>Imię i nazwisko</th>
-                                    <th>Oceny</th>
-                                    <th>Ocena wstawiana</th>
-                                    <th>Opis oceny</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php 
-                                    $grade = $row["idklasy"];
-                                    $subject = $row1["idprzedmioty"];
-                                    $students = $database->query("SELECT uczniowie.iduczniowie, 
-                                        uczniowie.nazwisko, 
-                                        uczniowie.imie, 
-                                        GROUP_CONCAT(oceny.ocena ORDER BY oceny.idoceny SEPARATOR ', ') AS oceny 
-                                    FROM uczniowie 
-                                    LEFT JOIN oceny 
-                                    ON uczniowie.iduczniowie=oceny.iducznia AND oceny.idprzedmiot = $subject 
-                                    WHERE uczniowie.idklasy = $grade 
-                                    GROUP BY uczniowie.iduczniowie 
-                                    ORDER BY uczniowie.nazwisko;");
-                                    $i = 1;
-                                ?>
-                                <?php while($row = $students->fetch_assoc()): ?>
+            <div class="card" style="padding: 1rem;">
+                <form action="wystawoceny2.php" method="post">
+                    <?php while($row1 = $subjects->fetch_assoc()): ?>
+                        <h4><?= $row1["nazwa"] ?></h4>
+                        <?php while($row = $grades->fetch_assoc()): ?>
+                            <h6>Klasa <?= $row["nazwa"] ?></h6>
+                            <table class="striped">
+                                <thead>
                                     <tr>
-                                        <td><?= $i ?></td>
-                                        <td><?= $row["imie"] ?> <?= $row["nazwisko"] ?></td>
-                                        <td><?= $row["oceny"]?></th>
-                                        <td></th>
-                                        <td></td>
-                                        <?php $i++; ?>
+                                        <th>Lp.</th>
+                                        <th>Imię i nazwisko</th>
+                                        <th>Oceny</th>
+                                        <th>Ocena wstawiana</th>
+                                        <th>Opis oceny</th>
                                     </tr>
-                                <?php endwhile; ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                        $grade = $row["idklasy"];
+                                        $subject = $row1["idprzedmioty"];
+                                        $students = $database->query("SELECT 
+                                                uczniowie.iduczniowie, 
+                                                uczniowie.nazwisko, 
+                                                uczniowie.imie, 
+                                                GROUP_CONCAT(oceny.ocena ORDER BY oceny.idoceny SEPARATOR ', ') AS oceny 
+                                            FROM uczniowie 
+                                            LEFT JOIN oceny 
+                                            ON uczniowie.iduczniowie=oceny.iducznia AND oceny.idprzedmiot = $subject 
+                                            WHERE uczniowie.idklasy = $grade 
+                                            GROUP BY uczniowie.iduczniowie 
+                                            ORDER BY uczniowie.nazwisko;");
+                                        $i = 1;
+                                    ?>
+                                    <?php while($row = $students->fetch_assoc()): ?>
+                                        <tr>
+                                            <td><?= $i ?></td>
+                                            <td><?= $row["imie"] ?> <?= $row["nazwisko"] ?></td>
+                                            <td><?= $row["oceny"]?></th>
+                                            <td><input type="text" name="mark[<?= $row1["idprzedmioty"] ?>][<?= $row["iduczniowie"] ?>]" class="validate"></td>
+                                            <td><input type="text" name="desc[<?= $row1["idprzedmioty"] ?>][<?= $row["iduczniowie"] ?>]" class="validate"></td>
+                                            <?php $i++; ?>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                </tbody>
+                            </table>
+                        <?php endwhile; ?>
+                        <?php $grades->data_seek(0); ?>
                     <?php endwhile; ?>
-                    <?php $grades->data_seek(0); ?>
-                <?php endwhile; ?>
+                    <button class="btn waves-effect waves-light" type="submit">Wystaw oceny</button>
+                </form>
             </div>
         </div>
     </main>
