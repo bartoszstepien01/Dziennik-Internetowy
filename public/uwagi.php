@@ -1,8 +1,7 @@
 <?php 
     require_once "config.php";
 
-    $grades = $database->query("SELECT * FROM klasy;");
-    $subjects = $database->query("SELECT * FROM przedmioty;");
+    $students = $database->query("SELECT uczniowie.iduczniowie, uczniowie.imie, uczniowie.nazwisko, klasy.nazwa FROM uczniowie INNER JOIN klasy ON uczniowie.idklasy = klasy.idklasy ORDER BY uczniowie.idklasy, nazwisko, imie;")
 ?>
 
 <!DOCTYPE html>
@@ -18,24 +17,20 @@
     <?php include "components/navbar.php"; ?>
     <main style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
         <div class="container">
-            <h3>Wstawianie ocen</h3>
+            <h3>Wstawianie uwag</h3>
             <div class="card" style="padding: 1rem;">  
-                <form action="podgladocen.php" method="post">
+                <form action="wstawuwage.php" method="post">
                     <div class="input-field">
-                        <select multiple name="grade[]">
-                            <?php while($row = $grades->fetch_assoc()): ?>
-                                <option value="<?= $row["idklasy"] ?>"><?= $row["nazwa"] ?></option>
+                        <select multiple name="student[]">
+                            <?php while($row = $students->fetch_assoc()): ?>
+                                <option value="<?= $row["iduczniowie"] ?>"><?= $row["imie"] ?> <?= $row["nazwisko"] ?> (<?= $row["nazwa"] ?>)</option>
                             <?php endwhile; ?>
                         </select>
-                        <label>Klasa</label>
+                        <label>Uczeń</label>
                     </div>
                     <div class="input-field">
-                        <select multiple name="subject[]">
-                            <?php while($row = $subjects->fetch_assoc()): ?>
-                                <option value="<?= $row["idprzedmioty"] ?>"><?= $row["nazwa"] ?></option>
-                            <?php endwhile; ?>
-                        </select>
-                        <label>Przedmiot</label>
+                        <textarea class="materialize-textarea" name="text" id="text"></textarea>
+                        <label>Treść uwagi</label>
                     </div>
                     <button class="btn waves-effect waves-light" type="submit">Dalej</button>
                 </form>
