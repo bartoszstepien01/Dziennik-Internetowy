@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <header style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
     <nav class="top-nav teal">
         <div class="nav-wrapper">
@@ -11,10 +12,9 @@
         <li>
             <div class="user-view">
                 <h6 class="text"><b>Zalogowany jako:</b></h6>
-                <h6 class="text">Jan Kowalski (nauczyciel)</h6>
+                <h6 class="text"><?= $_SESSION["user"]["imie"] ?> <?= $_SESSION["user"]["nazwisko"] ?> (<?= $permissions[$_SESSION["user"]["uprawnienia"]] ?>)</h6>
                 <div class="section" style="padding-top: 0;">
-                    <a class="btn-flat teal-text waves-effect" style="padding: 0;">Dane konta</a>
-                    <a class="btn-flat teal-text waves-effect">Wyloguj się</a>
+                    <a href="wyloguj.php" class="btn-flat teal-text waves-effect" style="padding: 0;">Wyloguj się</a>
                 </div>
             </div>
             

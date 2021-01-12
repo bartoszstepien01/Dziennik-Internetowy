@@ -1,4 +1,5 @@
-<?php 
+<?php
+    require_once "sprawdz_nauczyciel.php";
     require_once "config.php";
 
     $students = $database->query("SELECT uczniowie.iduczniowie, uczniowie.imie, uczniowie.nazwisko, klasy.nazwa FROM uczniowie INNER JOIN klasy ON uczniowie.idklasy = klasy.idklasy ORDER BY uczniowie.idklasy, nazwisko, imie;")

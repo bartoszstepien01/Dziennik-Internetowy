@@ -1,4 +1,5 @@
-<?php 
+<?php
+    require_once "sprawdz_nauczyciel.php";
     require_once "config.php";
 
     $grades = $database->query("SELECT * FROM klasy;");
