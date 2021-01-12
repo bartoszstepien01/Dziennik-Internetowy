@@ -4,6 +4,7 @@
 
     $grades = $database->query("SELECT * FROM klasy;");
     $subjects = $database->query("SELECT * FROM przedmioty;");
+    $teachers = $database->query("SELECT * FROM uczniowie WHERE uprawnienia > 0;");
 ?>
 
 <!DOCTYPE html>
@@ -57,6 +58,14 @@
                     <div class="input-field">
                         <input type="text" class="timepicker" name="end">
                         <label>Koniec lekcji</label>
+                    </div>
+                    <div class="input-field">
+                        <select name="teacher">
+                            <?php while($row = $teachers->fetch_assoc()): ?>
+                                <option value="<?= $row["iduczniowie"] ?>"><?= $row["imie"] ?> <?= $row["nazwisko"] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                        <label>Nauczyciel</label>
                     </div>
                     <div class="input-field">
                         <input type="text" name="classroom">

@@ -7,9 +7,10 @@
 
     $students = $_POST["student"];
     $text = $_POST["text"];
+    $teacher_id = $_SESSION["user"]["iduczniowie"];
 
     foreach ($students as $index => $student) 
-        $database->query("INSERT INTO uwagi (iducznia, tresc) VALUES ($student, '$text');");
+        $database->query("INSERT INTO uwagi (iducznia, tresc, nauczyciel) VALUES ($student, '$text', $teacher_id);");
 
     redirect("uwagi.php");
 ?>

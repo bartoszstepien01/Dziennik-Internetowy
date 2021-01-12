@@ -8,12 +8,14 @@
     $marks = $_POST["mark"];
     $descs = $_POST["desc"];
 
+    $teacher_id = $_SESSION["user"]["iduczniowie"];
+
     foreach($marks as $id => $subject)
         foreach($subject as $id2 => $mark)
             if(!empty($mark))
             {
                 $temp_desc = $descs[$id][$id2];
-                $database->query("INSERT INTO oceny (ocena, iducznia, opis, idprzedmiot) VALUES ('$mark', $id2, '$temp_desc', $id);");
+                $database->query("INSERT INTO oceny (ocena, iducznia, opis, idprzedmiot, nauczyciel) VALUES ('$mark', $id2, '$temp_desc', $id, $teacher_id);");
             }
     
     redirect("/");
