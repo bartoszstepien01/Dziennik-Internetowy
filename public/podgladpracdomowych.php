@@ -5,11 +5,11 @@
     if($_SERVER["REQUEST_METHOD"] != "POST")
         redirect("/");
     
-    $grades = implode(", ", $_POST["grade"]);
-    $subjects = implode(", ", $_POST["subject"]);
+    $grade = $_POST["grade"];
+    $subjects = implode(", ", $_POST["subjects"]);
 
-    $grades = $database->query("SELECT * FROM klasy WHERE idklasy IN ($grades) ORDER BY idklasy;");
-    $subjects = $database->query("SELECT * FROM przedmioty WHERE idprzedmioty IN ($subjects) ORDER BY idprzedmioty;");
+    $grades = $database->query("SELECT * FROM klasy WHERE idklasy = $grade ORDER BY idklasy;");
+    $subjects = $database->query("SELECT * FROM przedmioty WHERE idprzedmioty IN ($subjects);");
 ?>
 
 <!DOCTYPE html>
@@ -31,50 +31,42 @@
     <?php include "components/navbar.php"; ?>
     <main style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
         <div class="container">
-            <h3>Podgląd ocen</h3>
+            <h3>Podgląd sprawdzianów</h3>
             <div class="card" style="padding: 1rem;">
-                <?php while($row1 = $subjects->fetch_assoc()): ?>
-                    <h4><?= $row1["nazwa"] ?></h4>
-                    <div class="divider"></div>
                     <?php while($row = $grades->fetch_assoc()): ?>
-                        <h5>Klasa <?= $row["nazwa"] ?></h5>
-                        <br>
-                        <?php 
-                            $grade_id = $row["idklasy"];
-                            $students = $database->query("SELECT * FROM uczniowie WHERE idklasy = $grade_id ORDER BY nazwisko, imie;");
-                        ?>
-                        <?php while($student = $students->fetch_assoc()): ?>
-                            <h6><?= $student["imie"] ?> <?= $student["nazwisko"] ?></h6>
+                        <h4>Klasa <?= $row["nazwa"] ?></h4>
+                        <?php while($subject = $subjects->fetch_assoc()): ?>
+                            <br>
+                            <h6><?= $subject["nazwa"] ?></h6>
                             <div class="divider"></div>
                             <table class="striped">
                                 <thead>
                                     <tr>
-                                        <th>Ocena</th>
-                                        <th>Opis oceny</th>
+                                        <th>Termin</th>
+                                        <th>Opis pracy domowej</th>
+                                        <th>Nauczyciel</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php 
-                                        $student_id = $student["iduczniowie"];
-                                        $subject_id = $row1["idprzedmioty"];
-                                        $marks = $database->query("SELECT * FROM oceny WHERE iducznia = $student_id AND idprzedmiot = $subject_id;")
+                                        $subject_id = $subject["idprzedmioty"];
+                                        $grade_id = $row["idklasy"];
+                                        $database->query("SET lc_time_names = 'pl_PL';");
+                                        $homework = $database->query("SELECT DATE_FORMAT(pracedomowe.data, '%W, %d.%m.%Y r.') AS data, pracedomowe.opis, uczniowie.nazwisko, uczniowie.imie FROM pracedomowe INNER JOIN uczniowie ON uczniowie.iduczniowie = pracedomowe.nauczyciel WHERE pracedomowe.idprzedmiotu = $subject_id AND pracedomowe.idklasy = $grade_id;");
                                     ?>
-                                    <?php while($mark = $marks->fetch_assoc()): ?>
+                                    <?php while($hw = $homework->fetch_assoc()): ?>
                                         <tr>
-                                            <td><?= $mark["ocena"] ?></td>
-                                            <td><?= $mark["opis"] ?></td>
+                                            <td><?= $hw["data"] ?></td>
+                                            <td><?= $hw["opis"] ?></td>
+                                            <td><?= $hw["imie"] ?> <?= $hw["nazwisko"] ?></td>
                                         </tr>
                                     <?php endwhile; ?>
                                 </tbody>
                             </table>
                             <br>
                         <?php endwhile; ?>
-                        <br>
-                        <div class="divider"></div>
                     <?php endwhile; ?>
-                    <?php $grades->data_seek(0); ?>
                     <br>
-                <?php endwhile; ?>
             </div>
         </div>
     </main>

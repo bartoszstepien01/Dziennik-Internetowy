@@ -18,7 +18,29 @@
     <?php include "components/navbar.php"; ?>
     <main style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
         <div class="container">
-            <h3>Wstawianie nieobecności</h3>
+            <h3>Nieobecności</h3>
+            <h5>Podgląd</h5>
+            <div class="card" style="padding: 1rem;">  
+                <form action="podgladnieobecnosci.php" method="post">
+                    <div class="input-field">
+                        <select id="grade2" name="grade" onchange="fetchStudents();">
+                            <?php while($row = $grades->fetch_assoc()): ?>
+                                <option value="<?= $row["idklasy"] ?>"><?= $row["nazwa"] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                        <label>Klasa</label>
+                    </div>
+                    <?php $grades->data_seek(0); ?>
+                    <div class="input-field">
+                        <select name="students[]" id="students2" multiple>
+                        </select>
+                        <label>Uczniowie</label>
+                    </div>
+                    <button class="btn waves-effect waves-light" type="submit">Dalej</button> 
+                </form>
+            </div>
+            <br>
+            <h5>Wstawianie</h5>
             <div class="card" style="padding: 1rem;">  
                 <form action="dodajnieobecnosc.php" method="post">
                     <div class="input-field">
@@ -66,6 +88,8 @@
                     })
                     M.FormSelect.init(students);
                 });
+
+            fetchStudents();
 
             let elems = document.querySelectorAll('select');
             M.FormSelect.init(elems);
@@ -163,6 +187,24 @@
                     M.FormSelect.init(students);
                 });
         };
+
+        function fetchStudents()
+        {
+            let grade = document.querySelector("#grade2");
+            let students = document.querySelector("#students2");
+            fetch(`/api/pobierzuczniow.php?grade=${grade.value}`)
+                .then(response => response.json())
+                .then(response => {
+                    students.innerHTML = "";
+                    response.forEach(student => {
+                        var el = document.createElement("option");
+                        el.textContent = student.imie + " " + student.nazwisko;
+                        el.value = student.iduczniowie;
+                        students.appendChild(el);
+                    })
+                    M.FormSelect.init(students);
+                }); 
+        }
     </script>
 </body>
 </html>

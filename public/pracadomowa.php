@@ -19,7 +19,32 @@
     <?php include "components/navbar.php"; ?>
     <main style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
         <div class="container">
-            <h3>Dodawanie pracy domowej</h3>
+            <h3>Prace domowe</h3>
+            <h5>Podgląd</h5>
+            <div class="card" style="padding: 1rem;">  
+                <form action="podgladpracdomowych.php" method="post">
+                    <div class="input-field">
+                        <select name="grade">
+                            <?php while($row = $grades->fetch_assoc()): ?>
+                                <option value="<?= $row["idklasy"] ?>"><?= $row["nazwa"] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                        <label>Klasa</label>
+                    </div>
+                    <div class="input-field">
+                        <select name="subjects[]" multiple>
+                            <?php while($row = $subjects->fetch_assoc()): ?>
+                                <option value="<?= $row["idprzedmioty"] ?>"><?= $row["nazwa"] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                        <label>Przedmioty</label>
+                    </div>
+                    <?php $grades->data_seek(0); $subjects->data_seek(0); ?>
+                    <button class="btn waves-effect waves-light" type="submit">Dalej</button> 
+                </form>
+            </div>
+            <br>
+            <h5>Dodawanie</h5>
             <div class="card" style="padding: 1rem;">  
                 <form action="dodajpracedomowa.php" method="post">
                     <div class="input-field">

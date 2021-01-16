@@ -19,9 +19,9 @@
     <?php include "components/navbar.php"; ?>
     <main style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
         <div class="container">
-            <h3>Wstawianie ocen</h3>
+            <h3>Oceny</h3>
             <div class="card" style="padding: 1rem;">  
-                <form action="podgladocen.php" method="post">
+                <form method="post">
                     <div class="input-field">
                         <select multiple name="grade[]">
                             <?php while($row = $grades->fetch_assoc()): ?>
@@ -38,7 +38,8 @@
                         </select>
                         <label>Przedmiot</label>
                     </div>
-                    <button class="btn waves-effect waves-light" type="submit">Dalej</button>
+                    <button class="btn waves-effect waves-light" type="submit" formaction="podgladocen.php">Podgląd</button>
+                    <button class="btn waves-effect waves-light" type="submit" formaction="wstawianieocen.php">Wstawianie</button>
                 </form>
             </div>
         </div>

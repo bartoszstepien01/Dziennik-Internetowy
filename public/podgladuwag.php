@@ -5,11 +5,11 @@
     if($_SERVER["REQUEST_METHOD"] != "POST")
         redirect("/");
     
-    $grades = implode(", ", $_POST["grade"]);
-    $subjects = implode(", ", $_POST["subject"]);
+    $grade = $_POST["grade"];
+    $students = implode(", ", $_POST["students"]);
 
-    $grades = $database->query("SELECT * FROM klasy WHERE idklasy IN ($grades) ORDER BY idklasy;");
-    $subjects = $database->query("SELECT * FROM przedmioty WHERE idprzedmioty IN ($subjects) ORDER BY idprzedmioty;");
+    $grades = $database->query("SELECT * FROM klasy WHERE idklasy = $grade ORDER BY idklasy;");
+    $students = $database->query("SELECT * FROM uczniowie WHERE iduczniowie IN ($students) ORDER BY nazwisko, imie;");
 ?>
 
 <!DOCTYPE html>
@@ -31,50 +31,38 @@
     <?php include "components/navbar.php"; ?>
     <main style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
         <div class="container">
-            <h3>Podgląd ocen</h3>
+            <h3>Podgląd uwag</h3>
             <div class="card" style="padding: 1rem;">
-                <?php while($row1 = $subjects->fetch_assoc()): ?>
-                    <h4><?= $row1["nazwa"] ?></h4>
-                    <div class="divider"></div>
                     <?php while($row = $grades->fetch_assoc()): ?>
-                        <h5>Klasa <?= $row["nazwa"] ?></h5>
-                        <br>
-                        <?php 
-                            $grade_id = $row["idklasy"];
-                            $students = $database->query("SELECT * FROM uczniowie WHERE idklasy = $grade_id ORDER BY nazwisko, imie;");
-                        ?>
+                        <h4>Klasa <?= $row["nazwa"] ?></h4>
                         <?php while($student = $students->fetch_assoc()): ?>
+                            <br>
                             <h6><?= $student["imie"] ?> <?= $student["nazwisko"] ?></h6>
                             <div class="divider"></div>
                             <table class="striped">
                                 <thead>
                                     <tr>
-                                        <th>Ocena</th>
-                                        <th>Opis oceny</th>
+                                        <th>Nauczyciel</th>
+                                        <th>Treść uwagi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php 
                                         $student_id = $student["iduczniowie"];
-                                        $subject_id = $row1["idprzedmioty"];
-                                        $marks = $database->query("SELECT * FROM oceny WHERE iducznia = $student_id AND idprzedmiot = $subject_id;")
+                                        $notes = $database->query("SELECT uwagi.tresc, uczniowie.nazwisko, uczniowie.imie FROM uwagi INNER JOIN uczniowie ON uwagi.nauczyciel = uczniowie.iduczniowie WHERE uwagi.iducznia = $student_id;");
                                     ?>
-                                    <?php while($mark = $marks->fetch_assoc()): ?>
+                                    <?php while($note = $notes->fetch_assoc()): ?>
                                         <tr>
-                                            <td><?= $mark["ocena"] ?></td>
-                                            <td><?= $mark["opis"] ?></td>
+                                            <td><?= $note["imie"] ?> <?= $note["nazwisko"] ?></td>
+                                            <td><?= $note["tresc"] ?></td>
                                         </tr>
                                     <?php endwhile; ?>
                                 </tbody>
                             </table>
                             <br>
                         <?php endwhile; ?>
-                        <br>
-                        <div class="divider"></div>
                     <?php endwhile; ?>
-                    <?php $grades->data_seek(0); ?>
                     <br>
-                <?php endwhile; ?>
             </div>
         </div>
     </main>
