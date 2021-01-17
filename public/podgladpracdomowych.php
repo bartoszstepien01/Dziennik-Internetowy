@@ -31,7 +31,7 @@
     <?php include "components/navbar.php"; ?>
     <main style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
         <div class="container">
-            <h3>Podgląd sprawdzianów</h3>
+            <h3>Podgląd prac domowych</h3>
             <div class="card" style="padding: 1rem;">
                     <?php while($row = $grades->fetch_assoc()): ?>
                         <h4>Klasa <?= $row["nazwa"] ?></h4>

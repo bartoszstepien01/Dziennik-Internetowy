@@ -20,7 +20,44 @@
     <?php include "components/navbar.php"; ?>
     <main style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
         <div class="container">
-            <h3>Edycja planu lekcji</h3>
+            <h3>Plan lekcji</h3>
+            <h5>Podgląd</h5>
+            <div class="card" style="padding: 1rem;">  
+                <form action="podgladplanulekcji.php" method="post">
+                    <div class="input-field">
+                        <select name="grades[]" multiple>
+                            <?php while($row = $grades->fetch_assoc()): ?>
+                                <option value="<?= $row["idklasy"] ?>"><?= $row["nazwa"] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                        <label>Klasa</label>
+                    </div>
+                    <div class="input-field">
+                        <select name="teachers[]" multiple>
+                            <?php while($row = $teachers->fetch_assoc()): ?>
+                                <option value="<?= $row["iduczniowie"] ?>"><?= $row["imie"] ?> <?= $row["nazwisko"] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                        <label>Nauczyciel</label>
+                    </div>
+                    <div class="input-field">
+                        <select name="weekdays[]" multiple>
+                                <option value="1">poniedziałek</option>
+                                <option value="2">wtorek</option>
+                                <option value="3">środa</option>
+                                <option value="4">czwartek</option>
+                                <option value="5">piątek</option>
+                                <option value="6">sobota</option>
+                                <option value="0">niedziela</option>
+                        </select>
+                        <label>Dzień tygodnia</label>
+                    </div>
+                    <?php $grades->data_seek(0); $teachers->data_seek(0); ?>
+                    <button class="btn waves-effect waves-light" type="submit">Dalej</button> 
+                </form>
+            </div>
+            <br>
+            <h5>Dodawanie lekcji</h5>
             <div class="card" style="padding: 1rem;">  
                 <form action="dodajlekcje.php" method="post">
                     <div class="input-field">

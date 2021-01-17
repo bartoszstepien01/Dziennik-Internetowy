@@ -11,4 +11,5 @@
     }
 
     $permissions = ["uczeń", "nauczyciel"];
+    $weekday_names = ["niedziela", "poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota"];
 ?>

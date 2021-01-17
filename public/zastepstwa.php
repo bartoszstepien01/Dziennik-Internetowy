@@ -20,7 +20,36 @@
     <?php include "components/navbar.php"; ?>
     <main style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
         <div class="container">
-            <h3>Dodawanie zastępstw</h3>
+            <h3>Zastępstwa</h3>
+            <h5>Podgląd</h5>
+            <div class="card" style="padding: 1rem;">  
+                <form action="podgladzastepstw.php" method="post">
+                    <div class="input-field">
+                        <select name="grades[]" multiple>
+                            <?php while($row = $grades->fetch_assoc()): ?>
+                                <option value="<?= $row["idklasy"] ?>"><?= $row["nazwa"] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                        <label>Klasa</label>
+                    </div>
+                    <div class="input-field">
+                        <select name="teachers[]" multiple>
+                            <?php while($row = $teachers->fetch_assoc()): ?>
+                                <option value="<?= $row["iduczniowie"] ?>"><?= $row["imie"] ?> <?= $row["nazwisko"] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                        <label>Nauczyciel</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" class="datepicker" name="date">  
+                        <label>Data</label>
+                    </div>
+                    <?php $grades->data_seek(0); $teachers->data_seek(0); ?>
+                    <button class="btn waves-effect waves-light" type="submit">Dalej</button> 
+                </form>
+            </div>
+            <br>
+            <h5>Dodawanie</h5>
             <div class="card" style="padding: 1rem;">  
                 <form action="dodajzastepstwo.php" method="post">
                     <div class="input-field">
