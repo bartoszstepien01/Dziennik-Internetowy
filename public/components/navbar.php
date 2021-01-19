@@ -29,6 +29,10 @@
         <li <?php if($current_script == "pracadomowa") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="pracadomowa.php">Prace domowe</a></li>
         <li <?php if($current_script == "zastepstwa") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="zastepstwa.php">Zastępstwa</a></li>
         <li <?php if($current_script == "planlekcji") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="planlekcji.php">Plan lekcji</a></li>
+        <div class="divider"></div>
+        <li <?php if($current_script == "konta") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="konta.php">Konta</a></li>
+        <li <?php if($current_script == "klasy") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="klasy.php">Klasy</a></li>
+        <li <?php if($current_script == "przedmioty") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="przedmioty.php">Przedmioty</a></li>
     </ul>
 </header>
 
