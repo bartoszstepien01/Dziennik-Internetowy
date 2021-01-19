@@ -14,7 +14,8 @@
         if($result)
         {
             $_SESSION["user"] = $result;
-            redirect("index.php");
+            if($_SESSION["user"]["uprawnienia"] >= 1) redirect("oceny.php");
+            else redirect("ocenyuczen.php");
         }
     }
 ?>

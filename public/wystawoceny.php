@@ -3,7 +3,7 @@
     require_once "config.php";
 
     if($_SERVER["REQUEST_METHOD"] != "POST")
-        redirect("/");
+        redirect("oceny.php");
     
     $marks = $_POST["mark"];
     $descs = $_POST["desc"];
@@ -18,5 +18,5 @@
                 $database->query("INSERT INTO oceny (ocena, iducznia, opis, idprzedmiot, nauczyciel) VALUES ('$mark', $id2, '$temp_desc', $id, $teacher_id);");
             }
     
-    redirect("/");
+    redirect("oceny.php");
 ?>

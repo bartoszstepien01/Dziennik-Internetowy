@@ -15,20 +15,20 @@
         <li>
             <div class="user-view">
                 <h6 class="text"><b>Zalogowany jako:</b></h6>
-                <h6 class="text"><?= $_SESSION["user"]["imie"] ?> <?= $_SESSION["user"]["nazwisko"] ?> (nauczyciel)</h6>
+                <h6 class="text"><?= $_SESSION["user"]["imie"] ?> <?= $_SESSION["user"]["nazwisko"] ?> (uczeń)</h6>
                 <div class="section" style="padding-top: 0;">
                     <a href="wyloguj.php" class="btn-flat teal-text waves-effect" style="padding: 0;">Wyloguj się</a>
                 </div>
             </div>
         </li>
         <li><div class="divider"></div></li>
-        <li <?php if($current_script == "oceny") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="oceny.php">Oceny</a></li>
-        <li <?php if($current_script == "nieobecnosci") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="nieobecnosci.php">Nieobecności</a></li>
-        <li <?php if($current_script == "uwagi") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="uwagi.php">Uwagi</a></li>
-        <li <?php if($current_script == "sprawdziany") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="sprawdziany.php">Sprawdziany</a></li>
-        <li <?php if($current_script == "pracadomowa") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="pracadomowa.php">Prace domowe</a></li>
-        <li <?php if($current_script == "zastepstwa") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="zastepstwa.php">Zastępstwa</a></li>
-        <li <?php if($current_script == "planlekcji") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="planlekcji.php">Plan lekcji</a></li>
+        <li <?php if($current_script == "ocenyuczen") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="ocenyuczen.php">Oceny</a></li>
+        <li <?php if($current_script == "nieobecnosciuczen") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="nieobecnosciuczen.php">Nieobecności</a></li>
+        <li <?php if($current_script == "uwagiuczen") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="uwagiuczen.php">Uwagi</a></li>
+        <li <?php if($current_script == "sprawdzianyuczen") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="sprawdzianyuczen.php">Sprawdziany</a></li>
+        <li <?php if($current_script == "pracadomowauczen") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="pracadomowauczen.php">Prace domowe</a></li>
+        <li <?php if($current_script == "zastepstwauczen") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="zastepstwauczen.php">Zastępstwa</a></li>
+        <li <?php if($current_script == "planlekcjiuczen") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="planlekcjiuczen.php">Plan lekcji</a></li>
     </ul>
 </header>
 
