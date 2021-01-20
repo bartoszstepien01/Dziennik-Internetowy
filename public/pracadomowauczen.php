@@ -2,7 +2,9 @@
     require_once "sprawdz_uczen.php";
     require_once "config.php";
 
-    $subjects = $database->query("SELECT * FROM przedmioty;");
+    $grade_id = $_SESSION["user"]["idklasy"];
+
+    $subjects = $database->query("SELECT idprzedmioty, nazwa FROM przydzialy INNER JOIN przedmioty ON idprzedmiotu = idprzedmioty WHERE idklasy = $grade_id;");
 ?>
 
 <!DOCTYPE html>

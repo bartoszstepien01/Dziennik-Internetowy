@@ -33,6 +33,7 @@
         <li <?php if($current_script == "konta") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="konta.php">Konta</a></li>
         <li <?php if($current_script == "klasy") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="klasy.php">Klasy</a></li>
         <li <?php if($current_script == "przedmioty") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="przedmioty.php">Przedmioty</a></li>
+        <li <?php if($current_script == "przydzialprzedmiotow") echo 'class="active"' ?>><a class="waves-effect waves-teal" href="przydzialprzedmiotow.php">Przydział przedmiotów</a></li>
     </ul>
 </header>
 
