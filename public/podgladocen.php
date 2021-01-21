@@ -23,6 +23,10 @@
 </head>
 <body class="grey lighten-4" style="height: 100%;">
     <style>
+        table {
+            table-layout: fixed;
+        }
+
         td {
             padding-top: 7.5px;
             padding-bottom: 7.5px;
@@ -51,6 +55,7 @@
                                     <tr>
                                         <th>Ocena</th>
                                         <th>Opis oceny</th>
+                                        <th>Akcje</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -63,6 +68,12 @@
                                         <tr>
                                             <td><?= $mark["ocena"] ?></td>
                                             <td><?= $mark["opis"] ?></td>
+                                            <td>
+                                                <form method="post">
+                                                    <input type="hidden" name="id" value="<?= $mark["idoceny"] ?>">
+                                                    <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunocene.php">Usuń</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     <?php endwhile; ?>
                                 </tbody>

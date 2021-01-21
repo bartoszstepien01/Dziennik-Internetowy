@@ -36,11 +36,12 @@
     <?php include "components/navbar.php"; ?>
     <main style="margin-left: 300px; transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;">
         <div class="container">
-            <h3>Podgląd zastępstw</h3>
+            <h3>Podgląd planu lekcji</h3>
             <div class="card" style="padding: 1rem;">
                 <?php while($row = $grades->fetch_assoc()): ?>
                     <h4>Klasa <?= $row["nazwa"] ?></h4>
                     <?php foreach($weekdays as $weekday): ?>
+                        <br>
                         <h6><?= $weekday_names[$weekday] ?></h6>
                         <table>
                             <thead>
@@ -49,12 +50,13 @@
                                     <th>Przedmiot</th>
                                     <th>Nauczyciel</th>
                                     <th>Sala</th>
+                                    <th>Akcje</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php 
                                     $grade_id = $row["idklasy"];
-                                    $lessons = $database->query("SELECT TIME_FORMAT(lekcje.poczatek, '%H:%i') AS poczatek, TIME_FORMAT(lekcje.koniec, '%H:%i') AS koniec, przedmioty.nazwa, uczniowie.imie, uczniowie.nazwisko, lekcje.sala 
+                                    $lessons = $database->query("SELECT idlekcje, TIME_FORMAT(lekcje.poczatek, '%H:%i') AS poczatek, TIME_FORMAT(lekcje.koniec, '%H:%i') AS koniec, przedmioty.nazwa, uczniowie.imie, uczniowie.nazwisko, lekcje.sala 
                                         FROM lekcje 
                                         INNER JOIN przedmioty ON przedmioty.idprzedmioty = lekcje.lekcja 
                                         INNER JOIN uczniowie ON uczniowie.iduczniowie = lekcje.nauczyciel
@@ -66,6 +68,12 @@
                                         <td><?= $lesson["nazwa"] ?></td>
                                         <td><?= $lesson["imie"] ?> <?= $lesson["nazwisko"] ?></td>
                                         <td><?= $lesson["sala"] ?></td>
+                                        <td>
+                                            <form method="post">
+                                                <input type="hidden" name="id" value="<?= $lesson["idlekcje"] ?>">
+                                                <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunlekcje.php">Usuń</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 <?php endwhile; ?>
                             </tbody>
@@ -75,6 +83,7 @@
                 <?php while($row = $teachers->fetch_assoc()): ?>
                     <h4><?= $row["imie"] ?> <?= $row["nazwisko"] ?></h4>
                     <?php foreach($weekdays as $weekday): ?>
+                        <br>
                         <h6><?= $weekday_names[$weekday] ?></h6>
                         <table>
                             <thead>
@@ -83,12 +92,13 @@
                                     <th>Przedmiot</th>
                                     <th>Klasa</th>
                                     <th>Sala</th>
+                                    <th>Akcje</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php 
                                     $teacher_id = $row["iduczniowie"];
-                                    $lessons = $database->query("SELECT TIME_FORMAT(lekcje.poczatek, '%H:%i') AS poczatek, TIME_FORMAT(lekcje.koniec, '%H:%i') AS koniec, przedmioty.nazwa, klasy.nazwa AS nazwisko, lekcje.sala 
+                                    $lessons = $database->query("SELECT idlekcje, TIME_FORMAT(lekcje.poczatek, '%H:%i') AS poczatek, TIME_FORMAT(lekcje.koniec, '%H:%i') AS koniec, przedmioty.nazwa, klasy.nazwa AS nazwisko, lekcje.sala 
                                         FROM lekcje 
                                         INNER JOIN przedmioty ON przedmioty.idprzedmioty = lekcje.lekcja 
                                         INNER JOIN klasy ON klasy.idklasy = lekcje.klasa
@@ -100,6 +110,12 @@
                                         <td><?= $lesson["nazwa"] ?></td>
                                         <td><?= $lesson["nazwisko"] ?></td>
                                         <td><?= $lesson["sala"] ?></td>
+                                        <td>
+                                            <form method="post">
+                                                <input type="hidden" name="id" value="<?= $lesson["idlekcje"] ?>">
+                                                <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunlekcje.php">Usuń</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 <?php endwhile; ?>
                             </tbody>

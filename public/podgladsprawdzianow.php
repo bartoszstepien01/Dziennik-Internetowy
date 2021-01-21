@@ -23,6 +23,10 @@
 </head>
 <body class="grey lighten-4" style="height: 100%;">
     <style>
+        table {
+            table-layout: fixed;
+        }
+
         td {
             padding-top: 7.5px;
             padding-bottom: 7.5px;
@@ -45,6 +49,7 @@
                                         <th>Dzień</th>
                                         <th>Opis sprawdzianu</th>
                                         <th>Nauczyciel</th>
+                                        <th>Akcje</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -52,13 +57,19 @@
                                         $subject_id = $subject["idprzedmioty"];
                                         $grade_id = $row["idklasy"];
                                         $database->query("SET lc_time_names = 'pl_PL';");
-                                        $tests = $database->query("SELECT DATE_FORMAT(sprawdziany.data, '%W, %d.%m.%Y r.') AS data, sprawdziany.opis, uczniowie.nazwisko, uczniowie.imie FROM sprawdziany INNER JOIN uczniowie ON uczniowie.iduczniowie = sprawdziany.nauczyciel WHERE sprawdziany.idprzedmiotu = $subject_id AND sprawdziany.idklasy = $grade_id;");
+                                        $tests = $database->query("SELECT idsprawdziany, DATE_FORMAT(sprawdziany.data, '%W, %d.%m.%Y r.') AS data, sprawdziany.opis, uczniowie.nazwisko, uczniowie.imie FROM sprawdziany INNER JOIN uczniowie ON uczniowie.iduczniowie = sprawdziany.nauczyciel WHERE sprawdziany.idprzedmiotu = $subject_id AND sprawdziany.idklasy = $grade_id;");
                                     ?>
                                     <?php while($test = $tests->fetch_assoc()): ?>
                                         <tr>
                                             <td><?= $test["data"] ?></td>
                                             <td><?= $test["opis"] ?></td>
                                             <td><?= $test["imie"] ?> <?= $test["nazwisko"] ?></td>
+                                            <td>
+                                                <form method="post">
+                                                    <input type="hidden" name="id" value="<?= $test["idsprawdziany"] ?>">
+                                                    <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunsprawdzian.php">Usuń</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     <?php endwhile; ?>
                                 </tbody>

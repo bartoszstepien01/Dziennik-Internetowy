@@ -23,6 +23,10 @@
 </head>
 <body class="grey lighten-4" style="height: 100%;">
     <style>
+        table {
+            table-layout: fixed;
+        }
+
         td {
             padding-top: 7.5px;
             padding-bottom: 7.5px;
@@ -44,17 +48,24 @@
                                     <tr>
                                         <th>Nauczyciel</th>
                                         <th>Treść uwagi</th>
+                                        <th>Akcje</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php 
                                         $student_id = $student["iduczniowie"];
-                                        $notes = $database->query("SELECT uwagi.tresc, uczniowie.nazwisko, uczniowie.imie FROM uwagi INNER JOIN uczniowie ON uwagi.nauczyciel = uczniowie.iduczniowie WHERE uwagi.iducznia = $student_id;");
+                                        $notes = $database->query("SELECT uwagi.iduwagi, uwagi.tresc, uczniowie.nazwisko, uczniowie.imie FROM uwagi INNER JOIN uczniowie ON uwagi.nauczyciel = uczniowie.iduczniowie WHERE uwagi.iducznia = $student_id;");
                                     ?>
                                     <?php while($note = $notes->fetch_assoc()): ?>
                                         <tr>
                                             <td><?= $note["imie"] ?> <?= $note["nazwisko"] ?></td>
                                             <td><?= $note["tresc"] ?></td>
+                                            <td>
+                                                <form method="post">
+                                                    <input type="hidden" name="id" value="<?= $note["iduwagi"] ?>">
+                                                    <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunuwage.php">Usuń</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     <?php endwhile; ?>
                                 </tbody>

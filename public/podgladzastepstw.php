@@ -47,12 +47,13 @@
                                 <th>Przedmiot</th>
                                 <th>Nauczyciel</th>
                                 <th>Sala</th>
+                                <th>Akcje</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                                 $grade_id = $row["idklasy"];
-                                $substitutions = $database->query("SELECT TIME_FORMAT(lekcje.poczatek, '%H:%i') AS poczatek, TIME_FORMAT(lekcje.koniec, '%H:%i') AS koniec, przedmioty.nazwa, uczniowie.imie, uczniowie.nazwisko, zastepstwa.sala 
+                                $substitutions = $database->query("SELECT idzastepstwa, TIME_FORMAT(lekcje.poczatek, '%H:%i') AS poczatek, TIME_FORMAT(lekcje.koniec, '%H:%i') AS koniec, przedmioty.nazwa, uczniowie.imie, uczniowie.nazwisko, zastepstwa.sala 
                                     FROM zastepstwa 
                                     INNER JOIN lekcje ON zastepstwa.idlekcji = lekcje.idlekcje 
                                     INNER JOIN przedmioty ON zastepstwa.idprzedmiotu = przedmioty.idprzedmioty 
@@ -65,6 +66,12 @@
                                     <td><?= $substitution["nazwa"] ?></td>
                                     <td><?= $substitution["imie"] ?> <?= $substitution["nazwisko"] ?></td>
                                     <td><?= $substitution["sala"] ?></td>
+                                    <td>
+                                        <form method="post">
+                                            <input type="hidden" name="id" value="<?= $substitution["idzastepstwa"] ?>">
+                                            <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunzastepstwo.php">Usuń</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>
@@ -79,12 +86,13 @@
                                 <th>Przedmiot</th>
                                 <th>Klasa</th>
                                 <th>Sala</th>
+                                <th>Akcje</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                                 $teacher_id = $row["iduczniowie"];
-                                $substitutions = $database->query("SELECT TIME_FORMAT(lekcje.poczatek, '%H:%i') AS poczatek, TIME_FORMAT(lekcje.koniec, '%H %i') AS koniec, przedmioty.nazwa, klasy.nazwa AS nazwisko, zastepstwa.sala 
+                                $substitutions = $database->query("SELECT idzastepstwa, TIME_FORMAT(lekcje.poczatek, '%H:%i') AS poczatek, TIME_FORMAT(lekcje.koniec, '%H %i') AS koniec, przedmioty.nazwa, klasy.nazwa AS nazwisko, zastepstwa.sala 
                                     FROM zastepstwa 
                                     INNER JOIN lekcje ON zastepstwa.idlekcji = lekcje.idlekcje 
                                     INNER JOIN przedmioty ON zastepstwa.idprzedmiotu = przedmioty.idprzedmioty 
@@ -97,6 +105,12 @@
                                     <td><?= $substitution["nazwa"] ?></td>
                                     <td><?= $substitution["nazwisko"] ?></td>
                                     <td><?= $substitution["sala"] ?></td>
+                                    <td>
+                                        <form method="post">
+                                            <input type="hidden" name="id" value="<?= $substitution["idzastepstwa"] ?>">
+                                            <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunzastepstwo.php">Usuń</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>

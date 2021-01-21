@@ -23,6 +23,10 @@
 </head>
 <body class="grey lighten-4" style="height: 100%;">
     <style>
+        table {
+            table-layout: fixed;
+        }
+
         td {
             padding-top: 7.5px;
             padding-bottom: 7.5px;
@@ -45,19 +49,29 @@
                                         <th>Dzień</th>
                                         <th>Lekcja</th>
                                         <th>Usprawiedliwione</th>
+                                        <th>Akcje</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php 
                                         $student_id = $student["iduczniowie"];
                                         $database->query("SET lc_time_names = 'pl_PL';");
-                                        $absences = $database->query("SELECT DATE_FORMAT(nieobecnosci.data, '%W, %d.%m.%Y r.') AS data, przedmioty.nazwa AS nazwa, usprawiedliwione FROM nieobecnosci INNER JOIN lekcje ON lekcje.idlekcje = nieobecnosci.idlekcji INNER JOIN przedmioty ON lekcje.lekcja = przedmioty.idprzedmioty WHERE iducznia = $student_id;");
+                                        $absences = $database->query("SELECT idnieobecnosci, DATE_FORMAT(nieobecnosci.data, '%W, %d.%m.%Y r.') AS data, przedmioty.nazwa AS nazwa, usprawiedliwione FROM nieobecnosci INNER JOIN lekcje ON lekcje.idlekcje = nieobecnosci.idlekcji INNER JOIN przedmioty ON lekcje.lekcja = przedmioty.idprzedmioty WHERE iducznia = $student_id;");
                                     ?>
                                     <?php while($absence = $absences->fetch_assoc()): ?>
                                         <tr>
                                             <td><?= $absence["data"] ?></td>
                                             <td><?= $absence["nazwa"] ?></td>
                                             <td><?= $absence["usprawiedliwione"] ? "tak" : "nie" ?></td>
+                                            <td>
+                                                <form method="post">
+                                                    <input type="hidden" name="id" value="<?= $absence["idnieobecnosci"] ?>">
+                                                    <?php if(!$absence["usprawiedliwione"]): ?>
+                                                        <button class="btn-small waves-effect waves-light" type="submit" formaction="usprawiedliwianienieobecnosci.php">Usprawiedliwienie</button>
+                                                    <?php endif; ?>
+                                                    <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunnieobecnosc.php">Usuń</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     <?php endwhile; ?>
                                 </tbody>

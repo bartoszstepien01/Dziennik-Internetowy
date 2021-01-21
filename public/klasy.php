@@ -25,12 +25,19 @@
                     <thead>
                         <tr>
                             <th>Nazwa</th>
+                            <th>Akcje</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php while($grade = $grades->fetch_assoc()): ?>
                             <tr>
                                 <td><?= $grade["nazwa"] ?></td>
+                                <td>
+                                    <form method="post">
+                                        <input type="hidden" name="id" value="<?= $grade["idklasy"] ?>">
+                                        <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunklase.php">Usuń</button>
+                                    </form>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>

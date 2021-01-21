@@ -23,6 +23,10 @@
 </head>
 <body class="grey lighten-4" style="height: 100%;">
     <style>
+        table {
+            table-layout: fixed;
+        }
+
         td {
             padding-top: 7.5px;
             padding-bottom: 7.5px;
@@ -45,6 +49,7 @@
                                         <th>Termin</th>
                                         <th>Opis pracy domowej</th>
                                         <th>Nauczyciel</th>
+                                        <th>Akcje</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -52,13 +57,19 @@
                                         $subject_id = $subject["idprzedmioty"];
                                         $grade_id = $row["idklasy"];
                                         $database->query("SET lc_time_names = 'pl_PL';");
-                                        $homework = $database->query("SELECT DATE_FORMAT(pracedomowe.data, '%W, %d.%m.%Y r.') AS data, pracedomowe.opis, uczniowie.nazwisko, uczniowie.imie FROM pracedomowe INNER JOIN uczniowie ON uczniowie.iduczniowie = pracedomowe.nauczyciel WHERE pracedomowe.idprzedmiotu = $subject_id AND pracedomowe.idklasy = $grade_id;");
+                                        $homework = $database->query("SELECT idpracedomowe, DATE_FORMAT(pracedomowe.data, '%W, %d.%m.%Y r.') AS data, pracedomowe.opis, uczniowie.nazwisko, uczniowie.imie FROM pracedomowe INNER JOIN uczniowie ON uczniowie.iduczniowie = pracedomowe.nauczyciel WHERE pracedomowe.idprzedmiotu = $subject_id AND pracedomowe.idklasy = $grade_id;");
                                     ?>
                                     <?php while($hw = $homework->fetch_assoc()): ?>
                                         <tr>
                                             <td><?= $hw["data"] ?></td>
                                             <td><?= $hw["opis"] ?></td>
                                             <td><?= $hw["imie"] ?> <?= $hw["nazwisko"] ?></td>
+                                            <td>
+                                                <form method="post">
+                                                    <input type="hidden" name="id" value="<?= $hw["idpracedomowe"] ?>">
+                                                    <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunpracedomowa.php">Usuń</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     <?php endwhile; ?>
                                 </tbody>

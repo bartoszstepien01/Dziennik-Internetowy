@@ -2,7 +2,7 @@
     require_once "sprawdz_nauczyciel.php";
     require_once "config.php";
 
-    $accounts = $database->query("SELECT nazwisko, imie, uprawnienia, nazwa FROM uczniowie LEFT JOIN klasy ON uczniowie.idklasy = klasy.idklasy ORDER BY uprawnienia, uczniowie.idklasy, nazwisko, imie;");
+    $accounts = $database->query("SELECT iduczniowie, nazwisko, imie, uprawnienia, nazwa FROM uczniowie LEFT JOIN klasy ON uczniowie.idklasy = klasy.idklasy ORDER BY uprawnienia, uczniowie.idklasy, nazwisko, imie;");
     $grades = $database->query("SELECT * FROM klasy;");
 ?>
 
@@ -29,6 +29,7 @@
                             <th>Imię</th>
                             <th>Klasa</th>
                             <th>Uprawnienia</th>
+                            <th>Akcje</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,6 +39,14 @@
                                 <td><?= $account["imie"] ?></td>
                                 <td><?= $account["nazwa"] ?></td>
                                 <td><?= $permissions[$account["uprawnienia"]] ?></td>
+                                <td>
+                                    <form method="post">
+                                        <input type="hidden" name="id" value="<?= $account["iduczniowie"] ?>">
+                                        <?php if($account["iduczniowie"] != $_SESSION["user"]["iduczniowie"]): ?>
+                                            <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunkonto.php">Usuń</button>
+                                        <?php endif; ?>
+                                    </form>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
