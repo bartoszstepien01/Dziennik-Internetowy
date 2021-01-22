@@ -63,7 +63,7 @@
                                             <td>
                                                 <form method="post">
                                                     <input type="hidden" name="id" value="<?= $note["iduwagi"] ?>">
-                                                    <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunuwage.php">Usuń</button>
+                                                    <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunuwage.php" onclick="fetch('/usunuwage.php',{method: 'post', body: {id: <?= $note["iduwagi"] ?>}}).then(()=>location.reload());">Usuń</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -76,6 +76,7 @@
                     <br>
             </div>
         </div>
+        <br>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>

@@ -71,7 +71,7 @@
                                             <td>
                                                 <form method="post">
                                                     <input type="hidden" name="id" value="<?= $mark["idoceny"] ?>">
-                                                    <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunocene.php">Usuń</button>
+                                                    <button class="btn-small waves-effect waves-light red" formaction="usunocene.php" onclick="fetch('/usunocene.php',{method: 'post', body: {id: <?= $mark["idoceny"] ?>}}).then(()=>location.reload());">Usuń</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -88,6 +88,7 @@
                 <?php endwhile; ?>
             </div>
         </div>
+        <br>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>

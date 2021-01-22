@@ -3,5 +3,5 @@
     require_once "config.php";
 
     if(!isset($_SESSION["user"]) || $_SESSION["user"]["uprawnienia"] < 1) 
-        redirect("login.php");
+        redirect("index.php");
 ?>

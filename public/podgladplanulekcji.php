@@ -9,7 +9,8 @@
     $teachers = implode(", ", $_POST["teachers"]);
     $weekdays = $_POST["weekdays"];
 
-    $grades = $database->query("SELECT * FROM klasy WHERE idklasy IN ($grades);");
+    if($grades != "") $grades = $database->query("SELECT * FROM klasy WHERE idklasy IN ($grades);");
+    else $grades = $database->query("SELECT * FROM klasy WHERE idklasy = NULL;");
     $teachers = $database->query("SELECT * FROM uczniowie WHERE iduczniowie IN ($teachers);");
 ?>
 
@@ -71,7 +72,7 @@
                                         <td>
                                             <form method="post">
                                                 <input type="hidden" name="id" value="<?= $lesson["idlekcje"] ?>">
-                                                <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunlekcje.php">Usuń</button>
+                                                <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunlekcje.php" onclick="fetch('/usunlekcje.php',{method: 'post', body: {id: <?= $lesson["idlekcje"] ?>}}).then(()=>location.reload());">Usuń</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -113,7 +114,7 @@
                                         <td>
                                             <form method="post">
                                                 <input type="hidden" name="id" value="<?= $lesson["idlekcje"] ?>">
-                                                <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunlekcje.php">Usuń</button>
+                                                <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunlekcje.php" onclick="fetch('/usunlekcje.php',{method: 'post', body: {id: <?= $lesson["idlekcje"] ?>}}).then(()=>location.reload());">Usuń</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -125,6 +126,7 @@
                 <br>
             </div>
         </div>
+        <br>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>

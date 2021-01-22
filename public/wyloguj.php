@@ -4,5 +4,5 @@
 
     unset($_SESSION["user"]);
 
-    redirect("login.php");
+    redirect("index.php");
 ?>

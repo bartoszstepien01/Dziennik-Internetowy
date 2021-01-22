@@ -67,7 +67,7 @@
                                             <td>
                                                 <form method="post">
                                                     <input type="hidden" name="id" value="<?= $hw["idpracedomowe"] ?>">
-                                                    <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunpracedomowa.php">Usuń</button>
+                                                    <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunpracedomowa.php" onclick="fetch('/usunpracedomowa.php',{method: 'post', body: {id: <?= $hw["idpracedomowe"] ?>}}).then(()=>location.reload());">Usuń</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -80,6 +80,7 @@
                     <br>
             </div>
         </div>
+        <br>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>

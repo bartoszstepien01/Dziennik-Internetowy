@@ -2,7 +2,6 @@
     require_once "sprawdz_nauczyciel.php";
     require_once "config.php";
 
-    $students = $database->query("SELECT uczniowie.iduczniowie, uczniowie.imie, uczniowie.nazwisko, klasy.nazwa FROM uczniowie INNER JOIN klasy ON uczniowie.idklasy = klasy.idklasy ORDER BY uczniowie.idklasy, nazwisko, imie;");
     $grades = $database->query("SELECT * FROM klasy;");
 ?>
 
@@ -45,10 +44,15 @@
             <div class="card" style="padding: 1rem;">  
                 <form action="wstawuwage.php" method="post">
                     <div class="input-field">
-                        <select multiple name="student[]">
-                            <?php while($row = $students->fetch_assoc()): ?>
-                                <option value="<?= $row["iduczniowie"] ?>"><?= $row["imie"] ?> <?= $row["nazwisko"] ?> (<?= $row["nazwa"] ?>)</option>
+                        <select id="grade" onchange="fetchStudents2();">
+                            <?php while($row = $grades->fetch_assoc()): ?>
+                                <option value="<?= $row["idklasy"] ?>"><?= $row["nazwa"] ?></option>
                             <?php endwhile; ?>
+                        </select>
+                        <label>Klasa</label>
+                    </div>
+                    <div class="input-field">
+                        <select id="students" multiple name="student[]">
                         </select>
                         <label>Uczeń</label>
                     </div>
@@ -60,6 +64,7 @@
                 </form>
             </div>
         </div>
+        <br>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
@@ -67,12 +72,31 @@
             let elems = document.querySelectorAll('select');
             M.FormSelect.init(elems);
             fetchStudents();
+            fetchStudents2();
         });
 
         function fetchStudents()
         {
             let grade = document.querySelector("#grade2");
             let students = document.querySelector("#students2");
+            fetch(`/api/pobierzuczniow.php?grade=${grade.value}`)
+                .then(response => response.json())
+                .then(response => {
+                    students.innerHTML = "";
+                    response.forEach(student => {
+                        var el = document.createElement("option");
+                        el.textContent = student.imie + " " + student.nazwisko;
+                        el.value = student.iduczniowie;
+                        students.appendChild(el);
+                    })
+                    M.FormSelect.init(students);
+                }); 
+        }
+
+        function fetchStudents2()
+        {
+            let grade = document.querySelector("#grade");
+            let students = document.querySelector("#students");
             fetch(`/api/pobierzuczniow.php?grade=${grade.value}`)
                 .then(response => response.json())
                 .then(response => {

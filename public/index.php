@@ -3,6 +3,12 @@
 
     require_once "config.php";
 
+    if($_SESSION["user"])
+    {
+        if($_SESSION["user"]["uprawnienia"] >= 1) redirect("oceny.php");
+        else redirect("ocenyuczen.php");
+    }
+
     if($_SERVER["REQUEST_METHOD"] == POST)
     {
         $username = $_POST["username"];
@@ -30,6 +36,10 @@
 </head>
 <body class="grey lighten-4" style="height: 100%;">
     <div class="container">
+        <br>
+        <h2>Dziennik internetowy</h2>
+        <h5>Bartosz Stępień kl. IIbp</h5>
+        <br>
         <div id="login-page" class="row">
             <div class="col s12 z-depth-6 card-panel">
             <form class="login-form" method="post">
@@ -37,17 +47,15 @@
                     <h4>Zaloguj się</h4>
                 </div>
                 <div class="input-field col s12">
-                    <i class="material-icons prefix">mail_outline</i>
                     <input id="email" type="text" name="username">
                     <label for="email">Login</label>
                 </div>
                 <div class="input-field col s12">
-                    <i class="material-icons prefix">lock_outline</i>
                     <input id="password" type="password" name="password">
                     <label for="password">Hasło</label>
                 </div>
                 <div class="input-field col s12">
-                    <input type="submit" class="btn waves-effect waves-light col s12" value="Logowanie"></input>
+                    <button class="btn waves-effect waves-light col s12" type="submit">Logowanie</button>
                 </div>
             </form>
             </div>

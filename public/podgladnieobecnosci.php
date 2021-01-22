@@ -67,9 +67,9 @@
                                                 <form method="post">
                                                     <input type="hidden" name="id" value="<?= $absence["idnieobecnosci"] ?>">
                                                     <?php if(!$absence["usprawiedliwione"]): ?>
-                                                        <button class="btn-small waves-effect waves-light" type="submit" formaction="usprawiedliwianienieobecnosci.php">Usprawiedliwienie</button>
+                                                        <button class="btn-small waves-effect waves-light" type="submit" formaction="usprawiedliwianienieobecnosci.php" onclick="fetch('/usprawiedliwianienieobecnosci.php',{method: 'post', body: {id: <?= $absence["idnieobecnosci"] ?>}}).then(()=>location.reload());">Usprawiedliwienie</button>
                                                     <?php endif; ?>
-                                                    <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunnieobecnosc.php">Usuń</button>
+                                                    <button class="btn-small waves-effect waves-light red" type="submit" formaction="usunnieobecnosc.php" onclick="fetch('/usunnieobecnosc.php',{method: 'post', body: {id: <?= $absence["idnieobecnosci"] ?>}}).then(()=>location.reload());">Usuń</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -82,6 +82,7 @@
                     <br>
             </div>
         </div>
+        <br>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
