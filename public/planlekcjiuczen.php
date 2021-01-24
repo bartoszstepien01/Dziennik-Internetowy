@@ -1,6 +1,8 @@
 <?php 
     require_once "sprawdz_uczen.php";
     require_once "config.php";
+
+    $weekdays = [1, 2, 3, 4, 5, 6, 0];
 ?>
 
 <!DOCTYPE html>
@@ -18,8 +20,8 @@
         <div class="container">
             <h3>Zastępstwa</h3>
             <div class="card" style="padding: 1rem;"> 
-                <?php foreach($weekday_names as $index => $name): ?> 
-                    <h4><?= $name ?></h4>
+                <?php foreach($weekdays as $index): ?> 
+                    <h4><?= $weekday_names[$index] ?></h4>
                     <table>
                         <thead>
                             <tr>

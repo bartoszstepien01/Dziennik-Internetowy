@@ -37,7 +37,7 @@
                                 INNER JOIN lekcje ON zastepstwa.idlekcji = lekcje.idlekcje 
                                 INNER JOIN przedmioty ON zastepstwa.idprzedmiotu = przedmioty.idprzedmioty 
                                 INNER JOIN uczniowie ON zastepstwa.nauczyciel = uczniowie.iduczniowie 
-                                WHERE lekcje.klasa = $grade_id;");
+                                WHERE lekcje.klasa = $grade_id AND DATE(zastepstwa.data) >= CURDATE();");
                         ?>
                         <?php while($substitution = $substitutions->fetch_assoc()): ?>
                             <tr>

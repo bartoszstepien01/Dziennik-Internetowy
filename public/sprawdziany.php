@@ -4,6 +4,7 @@
 
     $grades = $database->query("SELECT * FROM klasy;");
     $subjects = $database->query("SELECT * FROM przedmioty;");
+    $teachers = $database->query("SELECT * FROM uczniowie WHERE uprawnienia > 0;");
 ?>
 
 <!DOCTYPE html>
@@ -24,12 +25,20 @@
             <div class="card" style="padding: 1rem;">  
                 <form action="podgladsprawdzianow.php" method="post">
                     <div class="input-field">
-                        <select name="grade">
+                        <select name="grades[]" multiple>
                             <?php while($row = $grades->fetch_assoc()): ?>
                                 <option value="<?= $row["idklasy"] ?>"><?= $row["nazwa"] ?></option>
                             <?php endwhile; ?>
                         </select>
                         <label>Klasa</label>
+                    </div>
+                    <div class="input-field">
+                        <select name="teachers[]" multiple>
+                            <?php while($row = $teachers->fetch_assoc()): ?>
+                                <option value="<?= $row["iduczniowie"] ?>"><?= $row["imie"] ?> <?= $row["nazwisko"] ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                        <label>Nauczyciel</label>
                     </div>
                     <div class="input-field">
                         <select name="subjects[]" multiple>

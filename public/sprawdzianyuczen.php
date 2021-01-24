@@ -37,7 +37,7 @@
                                 $subject_id = $subject["idprzedmioty"];
                                 $grade_id = $_SESSION["user"]["idklasy"];
                                 $database->query("SET lc_time_names = 'pl_PL';");
-                                $tests = $database->query("SELECT DATE_FORMAT(sprawdziany.data, '%W, %d.%m.%Y r.') AS data, sprawdziany.opis, uczniowie.nazwisko, uczniowie.imie FROM sprawdziany INNER JOIN uczniowie ON uczniowie.iduczniowie = sprawdziany.nauczyciel WHERE sprawdziany.idprzedmiotu = $subject_id AND sprawdziany.idklasy = $grade_id;");
+                                $tests = $database->query("SELECT DATE_FORMAT(sprawdziany.data, '%W, %d.%m.%Y r.') AS data, sprawdziany.opis, uczniowie.nazwisko, uczniowie.imie FROM sprawdziany INNER JOIN uczniowie ON uczniowie.iduczniowie = sprawdziany.nauczyciel WHERE sprawdziany.idprzedmiotu = $subject_id AND sprawdziany.idklasy = $grade_id AND DATE(sprawdziany.data) >= CURDATE();");
                             ?>
                             <?php while($test = $tests->fetch_assoc()): ?>
                                 <tr>

@@ -37,7 +37,7 @@
                                 $subject_id = $subject["idprzedmioty"];
                                 $grade_id = $_SESSION["user"]["idklasy"];
                                 $database->query("SET lc_time_names = 'pl_PL';");
-                                $homework = $database->query("SELECT DATE_FORMAT(pracedomowe.data, '%W, %d.%m.%Y r.') AS data, pracedomowe.opis, uczniowie.nazwisko, uczniowie.imie FROM pracedomowe INNER JOIN uczniowie ON uczniowie.iduczniowie = pracedomowe.nauczyciel WHERE pracedomowe.idprzedmiotu = $subject_id AND pracedomowe.idklasy = $grade_id;");
+                                $homework = $database->query("SELECT DATE_FORMAT(pracedomowe.data, '%W, %d.%m.%Y r.') AS data, pracedomowe.opis, uczniowie.nazwisko, uczniowie.imie FROM pracedomowe INNER JOIN uczniowie ON uczniowie.iduczniowie = pracedomowe.nauczyciel WHERE pracedomowe.idprzedmiotu = $subject_id AND pracedomowe.idklasy = $grade_id AND DATE(pracedomowe.data) >= CURDATE();");
                             ?>
                             <?php while($hw = $homework->fetch_assoc()): ?>
                                 <tr>
